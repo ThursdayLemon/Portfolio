@@ -84,8 +84,10 @@
   function stopMarquee(el) {
     if (!el) return;
     el.classList.remove("marquee");
-    el.style.removeProperty("--marquee-unit");
-    el.style.removeProperty("animation-duration");
+    if (el._marquee) {
+      el._marquee.cancel();
+      el._marquee = null;
+    }
   }
 
   function maybeMarquee(el) {
@@ -104,9 +106,15 @@
     for (var i = 0; i < MARQUEE_REPEATS; i++) tail += MARQUEE_SEP + text;
 
     el.setAttribute("data-marquee", tail);
-    el.style.setProperty("--marquee-unit", unit + "px");
-    el.style.animationDuration = (unit * MARQUEE_SPEED).toFixed(2) + "s";
     el.classList.add("marquee");
+
+    // Driven from script rather than a CSS @keyframes: the distance is a
+    // measured pixel value, and Safari does not reliably resolve a custom
+    // property used inside @keyframes, which left the title motionless on iOS.
+    el._marquee = el.animate(
+      [{ transform: "translateX(0)" }, { transform: "translateX(" + -unit + "px)" }],
+      { duration: unit * MARQUEE_SPEED * 1000, iterations: Infinity, easing: "linear" }
+    );
   }
 
   /* ---------- Home: pill hover -> backdrop + title ---------- */

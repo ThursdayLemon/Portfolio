@@ -147,6 +147,11 @@ Only the home page carries the pill nav. Project and About pages drop it — the
 Back button and the name in the top left are the way out. This is the
 reference's model, on desktop and mobile alike.
 
+On phones a project page puts the giant title *in the flow*, between the intro
+and the images, rather than pinned over the first screen. The intro runs well
+past one screen at that width, so a pinned title landed in the middle of it and
+its gradient hid the lines behind.
+
 **About** follows the reference's own about page: one prose column at columns
 3–5, standalone links, a portrait, and the giant title (reading "About") fixed
 bottom left. Continuous prose, no headings or tables.
@@ -164,8 +169,11 @@ order they do on reikocui.com and nothing is captioned that was not there.
 - **Pill hover** (desktop only, >1000px): the project's cover fades in full-bleed
   behind a 25% dither wash, and the giant title swaps from the name to the
   project name.
-- **Marquee**: if the title is wider than the viewport it scrolls seamlessly.
-  Speed is `0.005s` per pixel of one repetition, matching the reference.
+- **Marquee**: if the title is wider than the viewport it scrolls seamlessly,
+  at `0.005s` per pixel of one repetition, matching the reference. Driven by
+  `element.animate()` rather than a CSS `@keyframes`: the distance is a measured
+  pixel value, and Safari does not reliably resolve a custom property used
+  inside `@keyframes`, which left the title motionless on iOS.
 - **Theme**: follows the OS by default, and remembers a manual choice in
   `localStorage`. Set before first paint so there is no flash.
 - **Page transitions**: internal links fade the page out before navigating.
