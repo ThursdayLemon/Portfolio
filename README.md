@@ -115,6 +115,13 @@ On phones the row keeps its side-by-side arrangement — so a Before/After
 comparison still reads — but spans the full width, and the flex ratios scale
 the images to whatever fits.
 
+### Cache busting
+
+`style.css` and `app.js` are linked with a `?v=<hash>` of their own contents,
+recomputed by `build.py` on every run. GitHub Pages serves them with
+`max-age=600`, so without this a visitor can keep running the previous script
+for ten minutes after a deploy.
+
 ### Per-page background
 
 A project can recolour its whole page by adding a `"bg"` key to its entry in

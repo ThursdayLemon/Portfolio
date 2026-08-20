@@ -6,6 +6,7 @@ Emits index.html, about.html and one page per project into the folder this
 file lives in. Edit the CONTENT block below and re-run:  python3 build.py
 """
 
+import hashlib
 import html
 import json
 import os
@@ -250,6 +251,17 @@ COVERS = {
 e = html.escape
 
 
+def fingerprint(path):
+    """Short content hash, appended to asset URLs so a deploy is never served
+    from a stale cache. GitHub Pages sends max-age=600 on these files."""
+    with open(os.path.join(ROOT, path), "rb") as fh:
+        return hashlib.sha1(fh.read()).hexdigest()[:8]
+
+
+CSS_V = fingerprint("assets/css/style.css")
+JS_V = fingerprint("assets/js/app.js")
+
+
 def head(title, description, extra_body_class="", bg=None):
     # a page can recolour itself by overriding --bg; :root outranks the
     # stylesheet's html rule but still loses to .dark-theme, so dark mode
@@ -264,7 +276,7 @@ def head(title, description, extra_body_class="", bg=None):
 <meta name="description" content="{e(description)}">
 <link rel="preload" href="assets/fonts/TiemposFine-Light.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/TiemposText-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css">{page_bg}
+<link rel="stylesheet" href="assets/css/style.css?v={CSS_V}">{page_bg}
 <script>
   // mark that scripting is on, and set the theme before first paint
   (function () {{
@@ -371,8 +383,8 @@ CV_LINK = f"""
     </a>
 """
 
-FOOT = """
-<script src="assets/js/app.js"></script>
+FOOT = f"""
+<script src="assets/js/app.js?v={JS_V}"></script>
 </body>
 </html>
 """

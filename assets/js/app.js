@@ -81,13 +81,34 @@
     return ruler.getBoundingClientRect().width;
   }
 
+  // Each distinct scroll distance gets its own @keyframes rule, written into a
+  // stylesheet at runtime with the pixel value baked in. No custom property is
+  // involved (Safari does not reliably resolve var() inside @keyframes) and no
+  // Web Animations support is assumed — plain CSS animation, which every
+  // engine that can render this site already handles.
+  var kfSheet = null;
+  var kfMade = {};
+  function keyframesFor(distance) {
+    var name = "mq" + Math.round(distance);
+    if (kfMade[name]) return name;
+    if (!kfSheet) {
+      var style = document.createElement("style");
+      document.head.appendChild(style);
+      kfSheet = style.sheet;
+    }
+    kfSheet.insertRule(
+      "@keyframes " + name + "{from{transform:translateX(0)}" +
+        "to{transform:translateX(-" + Math.round(distance) + "px)}}",
+      kfSheet.cssRules.length
+    );
+    kfMade[name] = true;
+    return name;
+  }
+
   function stopMarquee(el) {
     if (!el) return;
     el.classList.remove("marquee");
-    if (el._marquee) {
-      el._marquee.cancel();
-      el._marquee = null;
-    }
+    el.style.animation = "";
   }
 
   function maybeMarquee(el) {
@@ -107,14 +128,14 @@
 
     el.setAttribute("data-marquee", tail);
     el.classList.add("marquee");
+    el.style.animation =
+      keyframesFor(unit) + " " + (unit * MARQUEE_SPEED).toFixed(2) +
+      "s linear infinite";
+  }
 
-    // Driven from script rather than a CSS @keyframes: the distance is a
-    // measured pixel value, and Safari does not reliably resolve a custom
-    // property used inside @keyframes, which left the title motionless on iOS.
-    el._marquee = el.animate(
-      [{ transform: "translateX(0)" }, { transform: "translateX(" + -unit + "px)" }],
-      { duration: unit * MARQUEE_SPEED * 1000, iterations: Infinity, easing: "linear" }
-    );
+  // A failure in here must never take the rest of the page's scripting with it
+  function safeMarquee(el) {
+    try { maybeMarquee(el); } catch (e) {}
   }
 
   /* ---------- Home: pill hover -> backdrop + title ---------- */
@@ -141,7 +162,7 @@
       });
       if (nameTitle) {
         nameTitle.style.display = "inline-block";
-        maybeMarquee(nameTitle);
+        safeMarquee(nameTitle);
       }
       active = null;
     }
@@ -176,7 +197,7 @@
         });
         if (title) {
           title.style.display = "inline-block";
-          maybeMarquee(title);
+          safeMarquee(title);
         }
       });
 
@@ -195,7 +216,7 @@
       });
     });
 
-    if (nameTitle) maybeMarquee(nameTitle);
+    if (nameTitle) safeMarquee(nameTitle);
   }
 
   /* ---------- Show / hide extra pills ---------------------- */
@@ -278,7 +299,7 @@
   function initProjectTitle() {
     var title = document.querySelector(".project h1 .title");
     if (!title) return;
-    maybeMarquee(title);
+    safeMarquee(title);
   }
 
   /* ---------- Re-measure on resize ------------------------- */
@@ -291,9 +312,16 @@
           document.querySelectorAll("h1 .title"),
           function (el) { return el.offsetParent !== null; }
         );
-        visible.forEach(maybeMarquee);
+        visible.forEach(safeMarquee);
       }, 200);
     });
+  }
+
+  function remeasureTitles() {
+    Array.prototype.forEach.call(
+      document.querySelectorAll("h1 .title"),
+      function (el) { if (el.offsetParent !== null) safeMarquee(el); }
+    );
   }
 
   function init() {
@@ -305,6 +333,11 @@
     initAos();
     initBackButton();
     initResize();
+
+    // the decision depends on text width, so redo it once the real face is in
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(remeasureTitles).catch(function () {});
+    }
   }
 
   if (document.readyState === "loading") {
