@@ -354,9 +354,9 @@ def header(current, show_back=False, home_link=False, show_projects=True):
 """
 
 
-# Fixed bottom right on every page. `download` makes the browser save the file
-# rather than open it, and it also tells the page-transition handler in app.js
-# to leave the click alone.
+# About page only. `download` makes the browser save the file rather than open
+# it, and it also tells the page-transition handler in app.js to leave the
+# click alone.
 CV_LINK = f"""
     <a class="cv-download" href="{CV_FILE}" download>
       <span>{CV_LABEL}</span>
@@ -366,7 +366,7 @@ CV_LINK = f"""
     </a>
 """
 
-FOOT = f"""{CV_LINK}
+FOOT = """
 <script src="assets/js/app.js"></script>
 </body>
 </html>
@@ -532,6 +532,7 @@ def build_about():
       </h1>
     </main>
 """
+    doc += CV_LINK
     doc += FOOT
     return doc
 
