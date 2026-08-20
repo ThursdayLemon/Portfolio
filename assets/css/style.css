@@ -1,0 +1,567 @@
+/* ============================================================
+   reikocui.com — layout & interaction system
+   Ported from the structural pattern of rodrigosens.com:
+   6-column grid, fixed pill nav, giant fixed marquee title,
+   full-bleed hover backdrop, grain overlay, dot cursor.
+   ============================================================ */
+
+/* ---------- 1. Fonts -----------------------------------------
+   Tiempos Fine / Tiempos Text are commercial (Klim Type Foundry).
+   Drop the licensed woff2 files into assets/fonts/ and the
+   @font-face rules below take over automatically — the Google
+   fallbacks after them are only used until then.
+   ------------------------------------------------------------ */
+@font-face {
+  font-family: "Tiempos Fine";
+  src: url("../fonts/TiemposFine-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Tiempos Text";
+  src: url("../fonts/TiemposText-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-display: "Tiempos Fine", "Instrument Serif", "Newsreader", Georgia, serif;
+  --font-text: "Tiempos Text", "Newsreader", Georgia, serif;
+
+  --gutter: 20px;
+  --cols: 6;
+  --pill-h: 40px;
+  --grey: #919191;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- 2. Theme ---------------------------------------- */
+html {
+  --white: #fff;
+  --black: #282828;
+  --dither: url("../dither-light.png");
+  scroll-behavior: smooth;
+  cursor: url("../cursor-gray.svg") 16 16, pointer;
+}
+html a,
+html button,
+html button:hover,
+html button span,
+html button::after,
+html button::before,
+html .theme-toggle,
+html iframe,
+html video {
+  cursor: url("../cursor-white.svg") 16 16, pointer;
+}
+html main h1 {
+  background-image: linear-gradient(
+    180deg,
+    hsla(0, 0%, 100%, 0) 10%,
+    hsla(0, 0%, 100%, 0.9) 50%,
+    #fff
+  );
+}
+html .theme-toggle .toggle { left: calc(100% - 12px); }
+
+html.dark-theme {
+  --white: #282828;
+  --black: #fff;
+  --dither: url("../dither-dark.png");
+  cursor: url("../cursor-white.svg") 16 16, pointer;
+}
+html.dark-theme a,
+html.dark-theme button,
+html.dark-theme button:hover,
+html.dark-theme button span,
+html.dark-theme button::after,
+html.dark-theme button::before,
+html.dark-theme .theme-toggle,
+html.dark-theme iframe,
+html.dark-theme video {
+  cursor: url("../cursor-gray.svg") 16 16, pointer;
+}
+html.dark-theme main h1 {
+  background-image: linear-gradient(
+    180deg,
+    rgba(40, 40, 40, 0) 10%,
+    rgba(40, 40, 40, 0.9) 50%,
+    #282828
+  );
+}
+html.dark-theme .theme-toggle .toggle { left: 2px; }
+
+/* ---------- 3. Reset / base --------------------------------- */
+* { box-sizing: border-box; }
+
+body,
+html { background-color: var(--white); }
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  min-height: calc(100vh - 30px);
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--black);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.js body {
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+.js body.is-ready { opacity: 1; }
+.js body.is-leaving { opacity: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  margin: 0;
+}
+p { line-height: 1.5; }
+a { text-decoration: none; color: inherit; }
+ul { margin: 0; padding: 0; list-style-type: none; }
+img { max-width: 100%; }
+button {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1;
+  outline: 0;
+  padding: 0;
+}
+
+/* ---------- 4. Header / pill navigation --------------------- */
+.menu {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  gap: var(--gutter);
+  font-family: var(--font-display);
+  position: fixed;
+  z-index: 8;
+  top: var(--gutter);
+  left: var(--gutter);
+  width: calc(100% - (var(--gutter) * 2));
+}
+
+.menu-about {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / 3;
+  margin-top: 7.61px;
+}
+.menu-about a {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1;
+  white-space: nowrap;
+  width: fit-content;
+}
+.menu-about a:hover { color: var(--grey); }
+
+.theme-toggle {
+  margin: 20px 0 0;
+  border-radius: 10px;
+  border: 1px solid var(--black);
+  padding: 2px;
+  display: flex;
+  justify-content: flex-end;
+  width: 36px;
+  height: 16px;
+  position: relative;
+}
+.theme-toggle .toggle {
+  background-color: var(--black);
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: left 0.25s var(--ease);
+}
+.theme-toggle:hover { border-color: var(--grey); }
+.theme-toggle:hover .toggle { background-color: var(--grey); }
+
+.menu-projects {
+  grid-column: 3 / 5;
+  width: 321px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.menu-projects a,
+.menu-projects button {
+  margin: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  border-radius: 20px;
+  border: 1px solid var(--black);
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1;
+  height: var(--pill-h);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.menu-projects a:hover,
+.menu-projects button:hover {
+  background-color: var(--black);
+  color: var(--white);
+}
+.menu-projects a.hidden { display: none; }
+.menu-projects button {
+  border-radius: 100%;
+  position: relative;
+  width: var(--pill-h);
+  padding: 0;
+}
+.menu-projects button span { display: none; }
+.menu-projects button::before,
+.menu-projects button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 1px;
+  background-color: var(--black);
+}
+.menu-projects button::after { width: 1px; height: 20px; }
+.menu-projects button.load-less::after { display: none; }
+.menu-projects button:hover::before,
+.menu-projects button:hover::after { background-color: var(--white); }
+
+/* Expanding round button, top right */
+.menu-contact {
+  display: flex;
+  justify-content: flex-end;
+  grid-column: 6 / 7;
+  grid-row: 1;
+}
+.menu-contact a {
+  width: var(--pill-h);
+  height: var(--pill-h);
+  position: relative;
+  font-family: var(--font-display);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  border-radius: var(--pill-h);
+}
+.menu-contact .btn-label {
+  position: absolute;
+  right: -1px;
+  display: flex;
+  align-items: center;
+  border-radius: var(--pill-h);
+  background-color: var(--black);
+  color: var(--white);
+  font-size: 24px;
+  line-height: 1.2;
+  padding: 6px 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.35s var(--ease), padding 0.35s var(--ease);
+}
+.menu-contact svg {
+  display: block;
+  width: 28px;
+  height: 28px;
+  overflow: visible;
+  position: absolute;
+  right: 6px;
+  top: 6px;
+}
+.menu-contact svg circle { fill: var(--black); transition: fill 0.25s var(--ease); }
+.menu-contact svg ellipse { stroke: var(--black); transition: stroke 0.25s var(--ease); }
+
+/* the label pill grows out to the left; the planet flips to sit on it */
+.menu-contact a:hover .btn-label {
+  max-width: 260px;
+  padding: 5px 42px 5px 14px;
+  border: 2px solid var(--black);
+}
+.menu-contact a:hover svg circle { fill: var(--white); }
+.menu-contact a:hover svg ellipse { stroke: var(--white); }
+
+/* Back / to-top button on inner pages */
+.menu .btn {
+  display: flex;
+  justify-content: flex-end;
+  grid-column: 2;
+  position: relative;
+  z-index: 9;
+}
+.menu .btn .back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 20px;
+  border: 1px solid var(--black);
+  padding: 6px 12px;
+  font-size: 24px;
+  font-family: var(--font-display);
+  line-height: 1;
+  width: fit-content;
+  height: var(--pill-h);
+  transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.menu .btn .back-btn svg {
+  stroke: var(--black);
+  fill: none;
+  width: 20px;
+  height: 16px;
+  margin-right: 10px;
+  transition: stroke 0.2s var(--ease);
+}
+.menu .btn .back-btn:hover { background-color: var(--black); color: var(--white); }
+.menu .btn .back-btn:hover svg { stroke: var(--white); }
+.menu .btn .top { display: none; }
+.menu .btn .top svg { transform: rotate(90deg); }
+
+/* ---------- 5. Main grid ------------------------------------ */
+main {
+  display: grid;
+  align-items: flex-start;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  gap: var(--gutter);
+  position: relative;
+  z-index: 2;
+  padding: var(--gutter);
+}
+.home main { padding: 0; z-index: 6; }
+
+main .text { grid-column: 3 / 6; }
+main .text p { margin: 0 0 30px; line-height: 1.6; }
+main .text a { text-decoration: underline; text-decoration-thickness: 1px; }
+main .text a:hover { color: var(--grey); }
+main .text img { display: block; width: 100%; }
+
+/* ---------- 6. Giant fixed title + marquee ------------------ */
+main h1 {
+  font-size: 96px;
+  font-weight: 300;
+  font-family: var(--font-display);
+  line-height: 1.4;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding-left: var(--gutter);
+  white-space: nowrap;
+  /* line box is 134px; the extra 18px keeps descenders off the viewport edge */
+  height: 152px;
+  width: calc(100vw - 20px);
+  overflow: hidden;
+  background-clip: padding-box;
+}
+main h1 .title { white-space: nowrap; display: none; }
+main h1 .title.name { display: inline-block; }
+
+main h1 .title.marquee {
+  animation-name: marquee;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+main h1 .title.marquee::after { content: attr(data-marquee); }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-1 * var(--marquee-unit, 100%))); }
+}
+
+/* ---------- 7. Full-bleed hover backdrop -------------------- */
+.bg,
+.bg-image {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}
+.bg { top: 0; left: 0; overflow: hidden; z-index: 0; }
+.bg-image {
+  top: 0;
+  left: 0;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: 50% !important;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+.bg-image.no-transition { transition: none !important; }
+
+/* Screen-door wash — a direct reproduction of the reference.
+   Theirs is a 2x2 GIF with one opaque pixel and three transparent ones: a 25%
+   dither that knocks the photo back and leaves a fine pixel texture behind.
+   Same tile here as SVG — white in light mode, #282828 in dark. */
+.bg-overlay {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+  pointer-events: none;
+  background-image: var(--dither);
+  background-size: 2px 2px;
+  background-repeat: repeat;
+  image-rendering: pixelated;
+}
+.bg-overlay.is-active { opacity: 1; }
+
+/* ---------- 8. Project page --------------------------------- */
+/* Keep the page padding here rather than on .content, so the intro column and
+   the image columns resolve against the same 6-column geometry and line up. */
+.project { position: static; padding: var(--gutter); }
+
+/* Intro sits top right, columns 3–5, level with the header.
+   The title and the metadata sidebar stay on the left. */
+.project .text {
+  grid-column: 3 / 6;
+  min-height: calc(100vh - 25px - 125px);
+  margin-top: 0;
+}
+.project .text .text-content {
+  overflow-y: auto;
+  padding: 0 0 0 0;
+  height: calc(100vh - 250px);
+  scrollbar-width: none;
+}
+.project .text .text-content::-webkit-scrollbar { width: 0; }
+.project .text p { margin: 0 0 30px; }
+.project .text p:last-child { padding-bottom: 140px; }
+
+/* absolute, not fixed: the title sits at the bottom of the first screen
+   and scrolls away with the intro — same as the reference */
+.project h1 { position: absolute; bottom: 90px; left: var(--gutter); padding: 0; }
+.project h1 span { display: block; width: fit-content; }
+
+.project .content {
+  margin: 90px 0 0;
+  grid-column: 1 / 7;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  gap: var(--gutter);
+}
+.project .content figure {
+  display: block;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+}
+.project .content figure img { display: block; width: 100%; height: auto; }
+
+/* Every image gets the same width — the right-hand four columns. Height is
+   whatever the image's own proportions give, so nothing is cropped. */
+.project .content figure { grid-column: 3 / 7; }
+
+.project .sidebar { grid-column: 1 / 2; }
+.project .sidebar h2 { font-weight: 400; color: var(--grey); }
+.project .sidebar ul { margin: 0 0 20px; }
+.project .sidebar ul li { margin: 2px 0; }
+.project .sidebar ul li a { text-decoration: underline; text-decoration-thickness: 1px; }
+.project .sidebar ul li a:hover { color: var(--grey); }
+
+.project .content .spacer { grid-column: 1 / 7; height: 120px; }
+
+/* ---------- 9. About page ----------------------------------- */
+.about .text { margin: 150px 0 0; grid-column: 3 / 6; }
+.about .text h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  margin: 0 0 12px;
+}
+.about .text .cv-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gutter);
+  margin: 0 0 14px;
+}
+.about .text .cv-row .role { color: var(--black); }
+.about .text .cv-row .brands { color: var(--grey); }
+.about .text hr {
+  border: none;
+  border-top: 1px solid var(--black);
+  opacity: 0.25;
+  margin: 40px 0;
+}
+.about .text ul.plain li { margin: 0 0 6px; }
+
+/* ---------- 10. Scroll-in animation -------------------------
+   Scoped to .js so content is visible if scripting fails or is off. */
+.js [data-aos="fade-up"] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s var(--ease), transform 1s var(--ease);
+}
+.js [data-aos="fade-up"].aos-animate { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-aos="fade-up"] { opacity: 1; transform: none; transition: none; }
+  main h1 .title.marquee { animation: none; }
+  main h1 .title.marquee::after { content: none; }
+}
+
+/* ---------- 11. Responsive ---------------------------------- */
+@media screen and (max-width: 1000px) {
+  .menu-projects { width: auto; grid-column: 3 / 6; }
+  main .text { grid-column: 1 / 7; }
+  .project .text { grid-column: 3 / 7; }
+  .about .text { grid-column: 2 / 7; }
+}
+
+@media screen and (max-width: 700px) {
+  main h1 { font-size: 56px; height: 96px; line-height: 1.4; }
+  .project h1 { bottom: 40px; }
+
+  .menu-about { grid-column: 1 / 3; }
+  .menu-projects {
+    grid-column: 1 / 7;
+    position: absolute;
+    margin: 129px 0 0;
+    padding-bottom: 25vh;
+    width: 100%;
+  }
+  .menu .btn {
+    grid-column: auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .menu-contact a:hover .btn-label { max-width: 0; padding: 6px 0; border: none; }
+
+  main .text { grid-column: 1 / 7; margin: 150px 0 0; }
+  .about .text { grid-column: 1 / 7; }
+  .about .text .cv-row { grid-template-columns: 1fr; gap: 2px; }
+
+  /* first screen has to clear the title sitting at bottom: 40px */
+  .project .text { grid-column: 1 / 7; margin: 0; min-height: calc(100vh - 60px); }
+  .project .text .text-content { height: auto; overflow-y: visible; padding-top: 129px; }
+  .project .content { margin: var(--gutter) 0 0; }
+  .project .content figure { grid-column: 1 / 7; }
+  .project .sidebar { order: 2; margin: 20px 0 0; grid-column: 1 / 7; }
+}
+
+/* Touch devices: no hover backdrop, so restore the system cursor */
+@media (hover: none) {
+  html, html a, html button { cursor: auto; }
+}

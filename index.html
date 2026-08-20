@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Liling Cui — Product Designer</title>
+<meta name="description" content="Product Designer and Creative Art Director. Selected UI/UX work for PUIG, BMW, Volkswagen and KAMA Ayurveda.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,200..700;1,6..72,200..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>
+  // mark that scripting is on, and set the theme before first paint
+  (function () {
+    document.documentElement.classList.add('js');
+    try {
+      var s = localStorage.getItem('theme');
+      var d = s ? s === 'dark'
+                : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (d) document.documentElement.classList.add('dark-theme');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body class="home">
+    <header class="menu">
+      <div class="menu-about">
+        <a href="about.html">About</a>
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="toggle"></span>
+        </button>
+      </div>
+      <nav class="menu-projects" show="6" aria-label="Projects">
+        <a href="lartisan-parfumeur-pdp-enhancement.html" item="lartisan-parfumeur-pdp-enhancement">L&#x27;Artisan Parfumeur</a>
+        <a href="white-label-project.html" item="white-label-project">White Label</a>
+        <a href="bmw-loyalty-programme.html" item="bmw-loyalty-programme">BMW Loyalty</a>
+        <a href="volkwagen-idhub.html" item="volkwagen-idhub">Volkswagen ID. Hub</a>
+        <a href="kama-web-facelift.html" item="kama-web-facelift">KAMA Facelift</a>
+        <a href="zmax-web-design.html" item="zmax-web-design">ZMAX</a>
+        <button class="load-more hide-and-show" aria-label="Show more projects"
+                aria-expanded="false"><span>Show more projects</span></button>
+      </nav>
+      <div class="menu-contact">
+        <a href="https://lilingcui.com">
+          <span class="btn-label">Creative work</span>
+          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="12"/><ellipse cx="20" cy="20" rx="18.5" ry="6.2" fill="none" stroke-width="2.6" transform="rotate(-22 20 20)"/></svg>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <h1 class="title-container" data-aos="fade-up">
+      <span class="title name" data-title="Liling Cui">Liling Cui</span>
+      <span class="title" item="lartisan-parfumeur-pdp-enhancement" data-title="L&#x27;Artisan Parfumeur PDP Enhancement">L&#x27;Artisan Parfumeur PDP Enhancement</span>
+      <span class="title" item="white-label-project" data-title="White Label Design System">White Label Design System</span>
+      <span class="title" item="bmw-loyalty-programme" data-title="BMW Loyalty Programme">BMW Loyalty Programme</span>
+      <span class="title" item="volkwagen-idhub" data-title="Volkswagen ID. Hub">Volkswagen ID. Hub</span>
+      <span class="title" item="kama-web-facelift" data-title="KAMA Web UI Upgrade">KAMA Web UI Upgrade</span>
+      <span class="title" item="zmax-web-design" data-title="ZMAX Web Design">ZMAX Web Design</span>
+      </h1>
+    </main>
+
+    <div class="bg" aria-hidden="true">
+    <div class="bg-image" item="lartisan-parfumeur-pdp-enhancement" style="background-image:url('assets/img/lartisan-parfumeur-pdp-enhancement/portfolio-liling-cui-IZwBdF6kmGo51UQZ.gif')"></div>
+    <div class="bg-image" item="white-label-project" style="background-image:url('assets/img/white-label-project/ecommerce-white-label-hostinger-website-builder-kopijtpacm10jqqz-Gi3H4V5oaueiGZ9J.jpg')"></div>
+    <div class="bg-image" item="bmw-loyalty-programme" style="background-image:url('assets/img/bmw-loyalty-programme/portfolio-liling-cui-CWf0nmMIYvAjCvkP.jpg')"></div>
+    <div class="bg-image" item="volkwagen-idhub" style="background-image:url('assets/img/volkwagen-idhub/portfolio-liling-cui-B2Ny3sgGYGVtTypH.jpg')"></div>
+    <div class="bg-image" item="kama-web-facelift" style="background-image:url('assets/img/kama-web-facelift/portfolio-liling-cui-vFulycDlR9ORgaCJ.jpg')"></div>
+    <div class="bg-image" item="zmax-web-design" style="background-image:url('assets/img/zmax-web-design/zmax-IRzhIGILPgQsXzVl.gif')"></div>
+      <div class="bg-veil"></div>
+      <div class="bg-overlay"></div>
+    </div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>
