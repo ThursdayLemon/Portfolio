@@ -151,7 +151,15 @@
         document.querySelectorAll(".bg-image").forEach(function (el) {
           if (el !== bg) el.style.opacity = 0;
         });
-        if (bg) bg.style.opacity = 1;
+        if (bg) {
+          bg.style.opacity = 1;
+          // video covers are preload="none", so the file is only fetched here
+          var vid = bg.querySelector("video");
+          if (vid) {
+            var playing = vid.play();
+            if (playing && playing.catch) playing.catch(function () {});
+          }
+        }
         setWash(true);
 
         if (nameTitle) { nameTitle.style.display = "none"; stopMarquee(nameTitle); }
@@ -173,6 +181,8 @@
           bg.classList.add("no-transition");
           setTimeout(function () { bg.classList.remove("no-transition"); }, 50);
         }
+        var vid = bg && bg.querySelector("video");
+        if (vid) vid.pause();
         if (active === key) reset();
       });
     });

@@ -454,6 +454,13 @@ main h1 .title.marquee::after { content: attr(data-marquee); }
   transition: opacity 0.4s ease-in-out;
 }
 .bg-image.no-transition { transition: none !important; }
+.bg-image video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 /* Screen-door wash — a direct reproduction of the reference.
    Theirs is a 2x2 GIF with one opaque pixel and three transparent ones: a 25%

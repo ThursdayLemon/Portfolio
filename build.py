@@ -233,13 +233,18 @@ ABOUT_LINKS = [
 with open(os.path.join(ROOT, "manifest.json")) as fh:
     MANIFEST = json.load(fh)
 
+# covers that are video rather than a still; the COVERS entry is their poster
+COVER_VIDEOS = {
+    "zmax-web-design": "zmax.mp4",
+}
+
 COVERS = {
     "white-label-project": "ecommerce-white-label-hostinger-website-builder-kopijtpacm10jqqz-Gi3H4V5oaueiGZ9J.jpg",
-    "lartisan-parfumeur-pdp-enhancement": "portfolio-liling-cui-IZwBdF6kmGo51UQZ.gif",
+    "lartisan-parfumeur-pdp-enhancement": "lartisan-cover.webp",
     "bmw-loyalty-programme": "portfolio-liling-cui-CWf0nmMIYvAjCvkP.jpg",
     "volkwagen-idhub": "portfolio-liling-cui-B2Ny3sgGYGVtTypH.jpg",
     "kama-web-facelift": "portfolio-liling-cui-vFulycDlR9ORgaCJ.jpg",
-    "zmax-web-design": "zmax-IRzhIGILPgQsXzVl.gif",
+    "zmax-web-design": "zmax-poster.jpg",
 }
 
 e = html.escape
@@ -415,12 +420,22 @@ def build_home():
 
     bgs = []
     for p in PROJECTS:
-        cover = COVERS[p["slug"]]
-        src = f"assets/img/{p['slug']}/{cover}"
-        bgs.append(
-            f'    <div class="bg-image" item="{p["slug"]}" '
-            f"style=\"background-image:url('{src}')\"></div>"
-        )
+        slug = p["slug"]
+        src = f"assets/img/{slug}/{COVERS[slug]}"
+        video = COVER_VIDEOS.get(slug)
+        if video:
+            # preload="none" keeps the file off the first load; app.js starts it
+            # on hover. The poster is the still shown until then.
+            bgs.append(
+                f'    <div class="bg-image" item="{slug}">'
+                f'<video src="assets/img/{slug}/{video}" poster="{src}" '
+                f'muted loop playsinline preload="none"></video></div>'
+            )
+        else:
+            bgs.append(
+                f'    <div class="bg-image" item="{slug}" '
+                f"style=\"background-image:url('{src}')\"></div>"
+            )
 
     doc = head(
         f"{NAME} — Product Designer",

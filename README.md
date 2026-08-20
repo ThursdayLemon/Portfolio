@@ -35,7 +35,7 @@ manifest.json               per project: the images in reading order, recovered
                             from reikocui.com's page model ({src, kind})
 assets/css/style.css        the whole design system
 assets/js/app.js            all interaction
-assets/img/<slug>/          project images (102 files, pulled from the live site)
+assets/img/<slug>/          project images, pulled from the live site
 assets/cursor-*.svg         custom dot cursor
 assets/LilingCui_CV.pdf     the CV the bottom-right button downloads
 ```
@@ -201,5 +201,7 @@ order they do on reikocui.com and nothing is captioned that was not there.
 - **Image order** comes straight from reikocui.com and is never reshuffled. All
   images share one width; reordering means reordering the rows in
   `manifest.json`.
-- **Video.** The reference uses looping Vimeo backgrounds on hover. All covers
-  here are stills or GIFs; swapping any `.bg-image` for an `<iframe>` works.
+- **Video covers.** ZMAX's cover is an MP4 (`COVER_VIDEOS` in `build.py`); the
+  rest are stills. A video cover ships `preload="none"` with the still as its
+  poster, so the file is only fetched when the pill is first hovered — app.js
+  calls `play()` there and pauses on the way out.
