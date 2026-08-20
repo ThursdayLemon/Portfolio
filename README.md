@@ -28,6 +28,7 @@ assets/css/style.css        the whole design system
 assets/js/app.js            all interaction
 assets/img/<slug>/          project images (102 files, pulled from the live site)
 assets/cursor-*.svg         custom dot cursor
+assets/LilingCui_CV.pdf     the CV the bottom-right button downloads
 ```
 
 ### Editing content
@@ -165,6 +166,13 @@ order they do on reikocui.com and nothing is captioned that was not there.
   reference's `white.gif` / `darkgrey.gif`. Tiled at `2px 2px` with
   `image-rendering: pixelated`, it lays a 25% white (or #282828) dot screen over
   the photo so the nav stays legible and the image keeps its texture.
+- **CV Download**: fixed bottom right on every page, same pill as the Back
+  button but with the page colour behind it so it stays readable over the
+  marqueeing title. The `download` attribute makes the browser save the file
+  rather than open it, and also tells the page-transition handler to leave the
+  click alone. On phones the title band owns the bottom 134px, so the pill sits
+  above it. To swap the CV, replace `assets/LilingCui_CV.pdf` — or point
+  `CV_FILE` in `build.py` somewhere else.
 - **Top-right button**: a 36px black ringed planet with sparkles that expands
   into a "Creative work" pill on hover and links to lilingcui.com. The icon is
   layered rather than knocked out — `.planet-ink` / `.planet-ring` carry the

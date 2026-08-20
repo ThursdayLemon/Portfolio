@@ -14,6 +14,8 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 NAME = "Liling Cui"
 CREATIVE_LABEL = "Creative work"
 CREATIVE_URL = "https://lilingcui.com"
+CV_FILE = "assets/LilingCui_CV.pdf"
+CV_LABEL = "CV Download"
 
 # ---------------------------------------------------------------- content
 
@@ -352,7 +354,19 @@ def header(current, show_back=False, home_link=False, show_projects=True):
 """
 
 
-FOOT = """
+# Fixed bottom right on every page. `download` makes the browser save the file
+# rather than open it, and it also tells the page-transition handler in app.js
+# to leave the click alone.
+CV_LINK = f"""
+    <a class="cv-download" href="{CV_FILE}" download>
+      <span>{CV_LABEL}</span>
+      <svg viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M10 2.5v9.5m0 0 3.8-3.8M10 12l-3.8-3.8M3 16.2h14"/>
+      </svg>
+    </a>
+"""
+
+FOOT = f"""{CV_LINK}
 <script src="assets/js/app.js"></script>
 </body>
 </html>
