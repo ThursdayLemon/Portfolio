@@ -6,29 +6,36 @@
    ============================================================ */
 
 /* ---------- 1. Fonts -----------------------------------------
-   Tiempos Fine / Tiempos Text are commercial (Klim Type Foundry).
-   Drop the licensed woff2 files into assets/fonts/ and the
-   @font-face rules below take over automatically — the Google
-   fallbacks after them are only used until then.
+   Tiempos Fine (display) and Tiempos Text (body), self-hosted from
+   assets/fonts/. These are commercial faces from Klim Type Foundry —
+   a licence is still outstanding, see README.
+
+   Each face is a single static weight, declared across 100–900 so the
+   browser maps every weight the stylesheet asks for onto the real file
+   instead of synthesising a fake bold.
    ------------------------------------------------------------ */
 @font-face {
   font-family: "Tiempos Fine";
-  src: url("../fonts/TiemposFine-Light.woff2") format("woff2");
-  font-weight: 300;
+  src: url("../fonts/TiemposFine-Light.woff2") format("woff2"),
+       url("../fonts/TiemposFine-Light.woff") format("woff"),
+       url("../fonts/TiemposFine-Light.ttf") format("truetype");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Tiempos Text";
-  src: url("../fonts/TiemposText-Regular.woff2") format("woff2");
-  font-weight: 400;
+  src: url("../fonts/TiemposText-Regular.woff2") format("woff2"),
+       url("../fonts/TiemposText-Regular.woff") format("woff"),
+       url("../fonts/TiemposText-Regular.ttf") format("truetype");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
-  --font-display: "Tiempos Fine", "Instrument Serif", "Newsreader", Georgia, serif;
-  --font-text: "Tiempos Text", "Newsreader", Georgia, serif;
+  --font-display: "Tiempos Fine", Georgia, "Times New Roman", serif;
+  --font-text: "Tiempos Text", Georgia, "Times New Roman", serif;
 
   --gutter: 20px;
   --cols: 6;
@@ -227,6 +234,8 @@ button {
   background-color: var(--black);
   color: var(--white);
 }
+/* the first pill loses its top margin so the row sits flush with the header */
+.menu-projects > *:first-child { margin-top: 0; }
 .menu-projects a.hidden { display: none; }
 .menu-projects button {
   border-radius: 100%;
@@ -369,8 +378,7 @@ main h1 {
   left: 0;
   padding-left: var(--gutter);
   white-space: nowrap;
-  /* line box is 134px; the extra 18px keeps descenders off the viewport edge */
-  height: 152px;
+  height: 134px;
   width: calc(100vw - 20px);
   overflow: hidden;
   background-clip: padding-box;
@@ -530,7 +538,8 @@ main h1 .title.marquee::after { content: attr(data-marquee); }
 }
 
 @media screen and (max-width: 700px) {
-  main h1 { font-size: 56px; height: 96px; line-height: 1.4; }
+  /* type scale is deliberately identical at every width, as on the reference:
+     96px titles marquee on a phone rather than shrinking */
   .project h1 { bottom: 40px; }
 
   .menu-about { grid-column: 1 / 3; }

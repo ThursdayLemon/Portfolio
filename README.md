@@ -63,20 +63,32 @@ that button appears automatically.
 | Grid | 6 columns, 20px gap, 20px page padding |
 | Colours | `--white: #fff` / `--black: #282828`, swapped in dark mode |
 | Muted | `#919191` |
-| Display type | 96px / weight 300 (56px under 700px wide) |
+| Display type | 96px / weight 300 — **same at every breakpoint** |
 | Body type | 18px, line-height 1.5–1.6 |
 | Pills | 40px tall, 20px radius, 1px border, 24px type — same size on mobile |
 
 ### Fonts
 
-The reference uses **Tiempos Fine** and **Tiempos Text** — commercial faces from
-Klim Type Foundry. This build falls back to **Instrument Serif** (display) and
-**Newsreader** (body) from Google Fonts, which sit close in colour and contrast.
+**Tiempos Fine** (display) and **Tiempos Text** (body), self-hosted from
+`assets/fonts/` in woff2 / woff / ttf. No webfont CDN is used, so the site has
+no external requests at all.
 
-To switch to the real thing once licensed: drop
-`TiemposFine-Light.woff2` and `TiemposText-Regular.woff2` into `assets/fonts/`.
-The `@font-face` rules at the top of `style.css` already point there and will
-take over automatically — no other change needed.
+Both are commercial faces from **Klim Type Foundry** and the files here were
+taken from the reference site. **A licence still needs buying** before this
+goes live — see klim.co.nz. Nothing else has to change when you buy it; the
+files simply become properly licensed.
+
+Each face ships as one static weight, declared `font-weight: 100 900` so the
+browser maps every requested weight onto the real file rather than
+synthesising a fake bold.
+
+### Type scale
+
+Taken verbatim from the reference, which uses **one scale at every viewport** —
+no `font-size` appears in any of its media queries. So a 96px title marquees
+across a phone screen instead of shrinking. Verified against a live render of
+rodrigosens.com: title ink, cap height, nav left edge and header baseline all
+land on identical pixels.
 
 ## Page hierarchy
 
@@ -115,6 +127,8 @@ order they do on reikocui.com and nothing is captioned that was not there.
 
 ## Still to do
 
+- **Font licence.** Tiempos Fine / Tiempos Text are in `assets/fonts/` but not
+  yet licensed. Buy from Klim Type Foundry before launch.
 - **Creative Campaign section.** Deliberately out of scope — only the six UI/UX
   projects are built. The eight Creative projects still live on the old site.
 - **Image order** comes straight from reikocui.com and is never reshuffled. All
