@@ -22,6 +22,9 @@ PROJECTS = [
         "slug": "lartisan-parfumeur-pdp-enhancement",
         "pill": "L'Artisan Parfumeur",
         "title": "L'Artisan Parfumeur PDP Enhancement",
+        # sampled from slide3-kggydka3Qfcg9Qb8.jpeg, which is #fffaf4 across
+        # 83% of its area and identical in all four corners
+        "bg": "255 250 244",
         "intro": [
             "As the white-label platform has been live for two years, this project "
             "focuses on general updates and enhancements. Based on insights gathered "
@@ -253,7 +256,11 @@ COVERS = {
 e = html.escape
 
 
-def head(title, description, extra_body_class=""):
+def head(title, description, extra_body_class="", bg=None):
+    # a page can recolour itself by overriding --bg; :root outranks the
+    # stylesheet's html rule but still loses to .dark-theme, so dark mode
+    # is left alone
+    page_bg = f"\n<style>:root {{ --bg: {bg}; }}</style>" if bg else ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -263,7 +270,7 @@ def head(title, description, extra_body_class=""):
 <meta name="description" content="{e(description)}">
 <link rel="preload" href="assets/fonts/TiemposFine-Light.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/TiemposText-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css">{page_bg}
 <script>
   // mark that scripting is on, and set the theme before first paint
   (function () {{
@@ -435,7 +442,12 @@ def build_project(p):
 
     intro = "\n".join(f"          <p>{e(t)}</p>" for t in p["intro"])
 
-    doc = head(f"{p['title']} — {NAME}", p["intro"][0][:180], "project-page")
+    doc = head(
+        f"{p['title']} — {NAME}",
+        p["intro"][0][:180],
+        "project-page",
+        bg=p.get("bg"),
+    )
     doc += header(current=slug, show_back=True, home_link=True, show_projects=False)
     doc += f"""
     <main class="project">

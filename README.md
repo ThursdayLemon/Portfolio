@@ -61,7 +61,8 @@ that button appears automatically.
 | Token | Value |
 |---|---|
 | Grid | 6 columns, 20px gap, 20px page padding |
-| Colours | `--white: #fff` / `--black: #282828`, swapped in dark mode |
+| Colours | `--white: rgb(var(--bg))` / `--black: #282828`, swapped in dark mode |
+| Page colour | `--bg`, an `"r g b"` triple — default `255 255 255` |
 | Muted | `#919191` |
 | Display type | 96px / weight 300 — **same at every breakpoint** |
 | Body type | 18px, line-height 1.5–1.6 |
@@ -81,6 +82,21 @@ files simply become properly licensed.
 Each face ships as one static weight, declared `font-weight: 100 900` so the
 browser maps every requested weight onto the real file rather than
 synthesising a fake bold.
+
+### Per-page background
+
+A project can recolour its whole page by adding a `"bg"` key to its entry in
+`PROJECTS`, as an `"r g b"` triple:
+
+```python
+"bg": "255 250 244",   # L'Artisan, sampled from its own slide artwork
+```
+
+`build.py` emits that as `<style>:root { --bg: ... }</style>` in the page head.
+`:root` outranks the stylesheet's `html` rule but loses to `html.dark-theme`,
+so the custom colour applies in light mode and dark mode is untouched. The
+giant title's fade-out gradient mixes from the same `--bg`, so it never leaves
+a white seam over a recoloured page.
 
 ### Type scale
 

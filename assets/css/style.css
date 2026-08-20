@@ -44,9 +44,14 @@
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ---------- 2. Theme ---------------------------------------- */
+/* ---------- 2. Theme ----------------------------------------
+   --bg is the page colour as a bare "r g b" triple, so the title's
+   fade-out gradient can be mixed from the same value. A page can
+   recolour itself by overriding --bg on :root, which outranks the
+   html rule below but still loses to .dark-theme. */
 html {
-  --white: #fff;
+  --bg: 255 255 255;
+  --white: rgb(var(--bg));
   --black: #282828;
   --dither: url("../dither-light.png");
   scroll-behavior: smooth;
@@ -63,18 +68,18 @@ html iframe,
 html video {
   cursor: url("../cursor-white.svg") 16 16, pointer;
 }
-html main h1 {
+main h1 {
   background-image: linear-gradient(
     180deg,
-    hsla(0, 0%, 100%, 0) 10%,
-    hsla(0, 0%, 100%, 0.9) 50%,
-    #fff
+    rgb(var(--bg) / 0) 10%,
+    rgb(var(--bg) / 0.9) 50%,
+    rgb(var(--bg))
   );
 }
 html .theme-toggle .toggle { left: calc(100% - 12px); }
 
 html.dark-theme {
-  --white: #282828;
+  --bg: 40 40 40;
   --black: #fff;
   --dither: url("../dither-dark.png");
   cursor: url("../cursor-white.svg") 16 16, pointer;
@@ -89,14 +94,6 @@ html.dark-theme .theme-toggle,
 html.dark-theme iframe,
 html.dark-theme video {
   cursor: url("../cursor-gray.svg") 16 16, pointer;
-}
-html.dark-theme main h1 {
-  background-image: linear-gradient(
-    180deg,
-    rgba(40, 40, 40, 0) 10%,
-    rgba(40, 40, 40, 0.9) 50%,
-    #282828
-  );
 }
 html.dark-theme .theme-toggle .toggle { left: 2px; }
 
