@@ -142,7 +142,11 @@
 
     if (left + textWidth <= window.innerWidth) return; // it fits, leave it alone
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // The home page name never scrolls — it shrinks to fit and sits still.
+    // Reduced motion routes everything down the same path.
+    var homeName =
+      el.classList.contains("name") && document.body.classList.contains("home");
+    if (homeName || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       fitTitle(el, text, left);
       return;
     }
