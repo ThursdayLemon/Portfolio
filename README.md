@@ -27,6 +27,7 @@ over HTTP.
 ## Structure
 
 ```
+CNAME                       the custom domain GitHub Pages serves from
 index.html                  home — pill nav + hover backdrop + giant title
 about.html                  about / CV
 <slug>.html                 one page per project (6)
