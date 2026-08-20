@@ -100,6 +100,9 @@ exactly the width of a single image. Normalising matters: raw ratios below 1
 would make flex hand out only that fraction of the row.
 
 `caption` is optional and renders above the image. `gap` defaults to 6px.
+On phones the row keeps its side-by-side arrangement — so a Before/After
+comparison still reads — but spans the full width, and the flex ratios scale
+the images to whatever fits.
 
 ### Per-page background
 
@@ -133,6 +136,10 @@ Only the home page carries the pill nav. Project and About pages drop it — the
 Back button and the name in the top left are the way out. This is the
 reference's model, on desktop and mobile alike.
 
+**About** follows the reference's own about page: one prose column at columns
+3–5, standalone links, a portrait, and the giant title (reading "About") fixed
+bottom left. Continuous prose, no headings or tables.
+
 Project pages put the title and the metadata sidebar on the **left**, the intro
 **top right** (columns 3–5), and every image on the **right four columns** —
 one uniform width, never full-bleed. Heights follow each image's own
@@ -158,9 +165,12 @@ order they do on reikocui.com and nothing is captioned that was not there.
   reference's `white.gif` / `darkgrey.gif`. Tiled at `2px 2px` with
   `image-rendering: pixelated`, it lays a 25% white (or #282828) dot screen over
   the photo so the nav stays legible and the image keeps its texture.
-- **Top-right button**: a 28px black ringed planet that expands into a "Creative
-  work" pill on hover and links to lilingcui.com. Body and ring flip to the
-  page colour together once the pill is behind them.
+- **Top-right button**: an 18px black ringed planet with sparkles that expands
+  into a "Creative work" pill on hover and links to lilingcui.com. The icon is
+  layered rather than knocked out — `.planet-ink` / `.planet-ring` carry the
+  drawing, `.planet-bg` / `.planet-bg-stroke` carry the page colour that cases
+  the ring where it passes behind the planet and punches the highlights. On
+  hover the two roles swap, so it reads on the dark pill too.
 
 ## Still to do
 

@@ -189,58 +189,41 @@ PROJECTS = [
     },
 ]
 
-ABOUT_ROLES = [
-    ("Senior Product Designer @ PUIG", "Penhaligon's, L'Artisan Parfumeur, Uriage"),
-    ("Senior Art Director @ Ogilvy", "Huawei"),
-    ("Group Head of Art @ Cheil", "Samsung, Volkswagen"),
-    ("Senior UI/UX Designer @ Serviceplan", "BMW, Porsche CRM"),
-    ("Senior Digital Designer @ VML", "BMW, MINI"),
-    ("Digital UI Designer @ Interone", "BMW, Bosch, Canon"),
+ABOUT_TEXT = [
+    "I’m a Product Designer and Creative Art Director based in London, with over "
+    "10 years across luxury e-commerce, automotive and technology brands, delivering "
+    "end-to-end digital products.",
+
+    "I’m currently Senior Product Designer at PUIG, working on Penhaligon’s, "
+    "L’Artisan Parfumeur and Uriage. Before that I was Senior Art Director at "
+    "Ogilvy on Huawei, Group Head of Art at Cheil on Samsung and Volkswagen, Senior "
+    "UI/UX Designer at Serviceplan on BMW and Porsche CRM, Senior Digital Designer at "
+    "VML on BMW and MINI, and Digital UI Designer at Interone on BMW, Bosch and Canon.",
+
+    "My work centres on wireframing, prototyping, UAT, data-driven optimisation and "
+    "new feature development — building scalable design systems and product "
+    "foundations aligned with brand guidelines and tonality, working closely with "
+    "product, engineering and commercial teams to drive measurable business impact. "
+    "Coming from advertising, where I led creative campaigns for BMW, Porsche, MINI, "
+    "Samsung and HUAWEI, I bring a deep understanding of UI, brand tone and visual "
+    "storytelling into conversion-focused product design.",
+
+    "Alongside product work I’m a documentary and fashion photographer, with a "
+    "focus on religious culture, public health, and women and girls’ issues. After "
+    "many years visiting Tibetan regions I document and explore religious practice, "
+    "paying particular attention to cultural erosion and the preservation of minority "
+    "traditions. The work has shown at the London Contemporary Art Fair, VENICE "
+    "CANVAS, the Julia Margaret Cameron Award and the Arte Laguna Prize, and was "
+    "written up by "
+    '<a href="https://www.itsnicethat.com/articles/liling-cui-project-photography-150223" '
+    'target="_blank" rel="noopener">It’s Nice That</a> and '
+    '<a href="https://www.itsliquid.com/interview-liling-cui.html" target="_blank" '
+    'rel="noopener">ITSLIQUID</a>.',
 ]
 
-ABOUT_BODY = [
-    "With extensive experience across luxury e-commerce, automotive and technology "
-    "brands, delivering end-to-end digital products.",
-    "Strong expertise in wireframing, prototyping, UAT, data-driven optimisation and new "
-    "feature development. Proven track record of building scalable design systems and "
-    "product foundations aligned with brand guidelines and tonality, while collaborating "
-    "closely with product, engineering and commercial stakeholders to drive measurable "
-    "business impact.",
-    "Previously a Digital Art Director in advertising, leading creative campaigns for BMW, "
-    "Porsche, MINI, Samsung and HUAWEI. Brings a deep understanding of UI, brand tone and "
-    "visual storytelling into scalable, conversion-focused product design.",
-]
-
-ABOUT_PHOTO = (
-    "Fashion and documentary photographer based in London, with a focus on religious "
-    "culture, public health, and women and girls' issues. With many years of experience "
-    "visiting Tibetan regions, documents and explores religious practices, paying "
-    "particular attention to cultural erosion and the preservation of minority traditions."
-)
-
-EXHIBITIONS = [
-    "London Contemporary Art Fair, 5th Edition — London, UK",
-    "London College of Fashion Exhibition, Victoria House — UK",
-    "VENICE CANVAS International Art Fair 2022 — Venice, Italy",
-    "CANVAS International Art Fair 2023 — Venice, Italy",
-    "19th Julia Margaret Cameron Award Exhibition — Barcelona, Spain",
-    "17th Arte Laguna Prize Finalist Exhibition — Venice, Italy",
-]
-
-AWARDS = [
-    "Art Show International Gallery, 6th Talent Prize Awards",
-    "8th Luxembourg Art Prize 2022, Finalist",
-    "Athens Photo Festival 2022, Shortlist",
-    "17th Arte Laguna Prize, Finalist",
-    "Format Photo Festival 2023, Long-list",
-]
-
-PRESS = [
-    (
-        "It's Nice That — Photography interview",
-        "https://www.itsnicethat.com/articles/liling-cui-project-photography-150223",
-    ),
-    ("ITSLIQUID Group — Interview", "https://www.itsliquid.com/interview-liling-cui.html"),
+# Trailing block of standalone links, one per line, as on the reference.
+ABOUT_LINKS = [
+    ("Creative work", CREATIVE_URL),
 ]
 
 # ---------------------------------------------------------------- helpers
@@ -291,13 +274,25 @@ def head(title, description, extra_body_class="", bg=None):
 <body class="{extra_body_class}">"""
 
 
-# Ringed planet. Body and ring are separate shapes so both can flip colour
-# together when the label pill expands behind them.
+# Ringed planet with sparkles. Layered rather than knocked out, so each part
+# can flip colour independently when the label pill expands behind it:
+# .planet-ink is the drawing, .planet-bg is the page colour used to case the
+# ring where it passes behind the planet and to punch the highlights.
 CONTACT_SVG = (
     '<svg viewBox="0 0 40 40" aria-hidden="true">'
-    '<circle cx="20" cy="20" r="12"/>'
-    '<ellipse cx="20" cy="20" rx="18.5" ry="6.2" fill="none" stroke-width="2.6" '
-    'transform="rotate(-22 20 20)"/>'
+    '<ellipse class="planet-ink" cx="35.0" cy="8.2" rx="0.95" ry="1.55" transform="rotate(28 35.0 8.2)"/>'
+    '<ellipse class="planet-ink" cx="6.2" cy="13.0" rx="0.85" ry="1.4" transform="rotate(22 6.2 13.0)"/>'
+    '<ellipse class="planet-ink" cx="9.4" cy="32.6" rx="0.85" ry="1.4" transform="rotate(-26 9.4 32.6)"/>'
+    '<ellipse class="planet-ink" cx="35.6" cy="26.6" rx="0.9" ry="1.45" transform="rotate(26 35.6 26.6)"/>'
+    '<path class="planet-ring" d="M37.29 13.71A18.4 5.2 -20.0 1 1 2.71 26.29'
+    'A18.4 5.2 -20.0 1 1 37.29 13.71Z"/>'
+    '<circle class="planet-bg-stroke" cx="20" cy="20" r="12.3" stroke-width="3.2"/>'
+    '<circle class="planet-ink" cx="20" cy="20" r="12.3"/>'
+    '<path class="planet-bg-stroke" stroke-width="4" d="M30.67 20.81A18.4 5.2 -20.0 1 1 6.71 20.86"/>'
+    '<path class="planet-ring" d="M30.67 20.81A18.4 5.2 -20.0 1 1 6.71 20.86"/>'
+    '<path class="planet-bg" d="M13.6 12.9a11 11 0 0 1 8.0-3.6 0.95 0.95 0 0 1 0.05 1.9'
+    ' 9.1 9.1 0 0 0-6.6 3.0 0.95 0.95 0 0 1-1.45-1.3z"/>'
+    '<circle class="planet-bg" cx="15.2" cy="17.2" r="1.05"/>'
     "</svg>"
 )
 
@@ -486,17 +481,13 @@ def build_project(p):
 
 
 def build_about():
-    roles = "\n".join(
-        f'          <div class="cv-row"><span class="role">{e(r)}</span>'
-        f'<span class="brands">{e(b)}</span></div>'
-        for r, b in ABOUT_ROLES
-    )
-    body = "\n".join(f"          <p>{e(t)}</p>" for t in ABOUT_BODY)
-    exhibitions = "\n".join(f"            <li>{e(x)}</li>" for x in EXHIBITIONS)
-    awards = "\n".join(f"            <li>{e(x)}</li>" for x in AWARDS)
-    press = "\n".join(
-        f'            <li><a href="{e(u)}" target="_blank" rel="noopener">{e(t)}</a></li>'
-        for t, u in PRESS
+    """Same shape as the reference's about page: one prose column at the top
+    right, standalone links under it, a portrait, and the giant title pinned
+    bottom left. No headings, no tables — it reads as continuous prose."""
+    paras = "\n".join(f"          <p>{t}</p>" for t in ABOUT_TEXT)
+    links = "<br>\n          ".join(
+        f'<a href="{e(u)}" target="_blank" rel="noopener">{e(t)}</a>'
+        for t, u in ABOUT_LINKS
     )
     photos = MANIFEST.get("about", [])
     portrait = (
@@ -507,45 +498,22 @@ def build_about():
 
     doc = head(
         f"About — {NAME}",
-        "Product Designer and Creative Art Director with 10+ years of experience "
-        "across luxury e-commerce, automotive and technology brands.",
+        "Product Designer and Creative Art Director with 10+ years across luxury "
+        "e-commerce, automotive and technology brands.",
         "about-page",
     )
     doc += header(current=None, home_link=True, show_projects=False)
     doc += f"""
     <main class="about">
       <div class="text" data-aos="fade-up">
-        <h2>Product Designer / Creative Art Director</h2>
-        <p>10+ years experience</p>
-
-{roles}
-
-        <hr>
-
-{body}
-
-        <hr>
-
-        <h2>Documentary / Fashion Photographer</h2>
-        <p>{e(ABOUT_PHOTO)}</p>
-
-        <h2>Exhibitions</h2>
-        <ul class="plain">
-{exhibitions}
-        </ul>
-
-        <h2>Awards</h2>
-        <ul class="plain">
-{awards}
-        </ul>
-
-        <h2>Press</h2>
-        <ul class="plain">
-{press}
-        </ul>
-
+{paras}
+          <p>{links}</p>
 {portrait}
       </div>
+
+      <h1 data-aos="fade-up">
+        <span class="title name" data-title="About">About</span>
+      </h1>
     </main>
 """
     doc += FOOT

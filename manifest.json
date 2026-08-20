@@ -383,12 +383,20 @@
    ]
   },
   {
-   "src": "assets/img/kama-web-facelift/kama-ui-facelift-liling-cui-3-3BPplkBaA4njUxh7.jpg",
-   "kind": "el"
-  },
-  {
-   "src": "assets/img/kama-web-facelift/kama-ui-facelift-liling-cui-9-zvFmDlfq4KMwpVlR.jpg",
-   "kind": "el"
+   "kind": "group",
+   "gap": 6,
+   "items": [
+    {
+     "src": "assets/img/kama-web-facelift/kama-ui-facelift-liling-cui-3-3BPplkBaA4njUxh7.jpg",
+     "grow": 0.1866,
+     "caption": "Before"
+    },
+    {
+     "src": "assets/img/kama-web-facelift/kama-ui-facelift-liling-cui-9-zvFmDlfq4KMwpVlR.jpg",
+     "grow": 0.15,
+     "caption": "After"
+    }
+   ]
   }
  ],
  "zmax-web-design": [

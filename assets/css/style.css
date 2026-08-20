@@ -292,15 +292,18 @@ button {
 }
 .menu-contact svg {
   display: block;
-  width: 28px;
-  height: 28px;
+  width: 18px;
+  height: 18px;
   overflow: visible;
   position: absolute;
-  right: 6px;
-  top: 6px;
+  right: 11px;
+  top: 11px;
 }
-.menu-contact svg circle { fill: var(--black); transition: fill 0.25s var(--ease); }
-.menu-contact svg ellipse { stroke: var(--black); transition: stroke 0.25s var(--ease); }
+.menu-contact svg * { transition: fill 0.25s var(--ease), stroke 0.25s var(--ease); }
+.menu-contact .planet-ink { fill: var(--black); }
+.menu-contact .planet-ring { fill: none; stroke: var(--black); stroke-width: 1.9; stroke-linecap: round; }
+.menu-contact .planet-bg { fill: var(--white); }
+.menu-contact .planet-bg-stroke { fill: none; stroke: var(--white); }
 
 /* the label pill grows out to the left; the planet flips to sit on it */
 .menu-contact a:hover .btn-label {
@@ -308,8 +311,11 @@ button {
   padding: 5px 42px 5px 14px;
   border: 2px solid var(--black);
 }
-.menu-contact a:hover svg circle { fill: var(--white); }
-.menu-contact a:hover svg ellipse { stroke: var(--white); }
+/* on the expanded pill the drawing and the page colour swap roles */
+.menu-contact a:hover .planet-ink { fill: var(--white); }
+.menu-contact a:hover .planet-ring { stroke: var(--white); }
+.menu-contact a:hover .planet-bg { fill: var(--black); }
+.menu-contact a:hover .planet-bg-stroke { stroke: var(--black); }
 
 /* Back / to-top button on inner pages */
 .menu .btn {
@@ -504,28 +510,12 @@ main h1 .title.marquee::after { content: attr(data-marquee); }
 
 .project .content .spacer { grid-column: 1 / 7; height: 120px; }
 
-/* ---------- 9. About page ----------------------------------- */
-.about .text { margin: 150px 0 0; grid-column: 3 / 6; }
-.about .text h2 {
-  font-family: var(--font-display);
-  font-size: 24px;
-  margin: 0 0 12px;
-}
-.about .text .cv-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--gutter);
-  margin: 0 0 14px;
-}
-.about .text .cv-row .role { color: var(--black); }
-.about .text .cv-row .brands { color: var(--grey); }
-.about .text hr {
-  border: none;
-  border-top: 1px solid var(--black);
-  opacity: 0.25;
-  margin: 40px 0;
-}
-.about .text ul.plain li { margin: 0 0 6px; }
+/* ---------- 9. About page -----------------------------------
+   One prose column top right, giant title bottom left — the same shape as
+   the reference's about page. Paragraph and link styling comes from the
+   shared `main .text` rules. */
+.about .text { grid-column: 3 / 6; }
+/* the title stays fixed here — only project pages let it scroll away */
 
 /* ---------- 10. Scroll-in animation -------------------------
    Scoped to .js so content is visible if scripting fails or is off. */
@@ -572,14 +562,17 @@ main h1 .title.marquee::after { content: attr(data-marquee); }
   .menu-contact a:hover .btn-label { max-width: 0; padding: 6px 0; border: none; }
 
   main .text { grid-column: 1 / 7; margin: 150px 0 0; }
-  .about .text { grid-column: 1 / 7; }
-  .about .text .cv-row { grid-template-columns: 1fr; gap: 2px; }
+  .about .text { grid-column: 1 / 7; margin: 150px 0 0; }
 
   /* first screen has to clear the title sitting at bottom: 40px */
   .project .text { grid-column: 1 / 7; margin: 0; min-height: calc(100vh - 60px); }
   .project .text .text-content { height: auto; overflow-y: visible; padding-top: 129px; }
   .project .content { margin: var(--gutter) 0 0; }
-  .project .content figure { grid-column: 1 / 7; }
+  .project .content figure,
+  .project .content .group { grid-column: 1 / 7; }
+  /* paired rows stay side by side so the comparison still reads, but they now
+     span the full width and the flex ratios scale them to whatever fits */
+  .project .content .group figcaption { font-size: 18px; }
   .project .sidebar { order: 2; margin: 20px 0 0; grid-column: 1 / 7; }
 }
 
