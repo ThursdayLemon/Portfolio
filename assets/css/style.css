@@ -427,6 +427,9 @@ main h1 .title.name { display: inline-block; }
 /* the scroll itself is driven by app.js; this only supplies the repeated tail */
 main h1 .title.marquee::after { content: attr(data-marquee); }
 
+/* a title shrunk to fit no longer needs the full 96px line box */
+main h1.title-fitted { height: auto; min-height: 0; }
+
 /* ---------- 7. Full-bleed hover backdrop -------------------- */
 .bg,
 .bg-image {

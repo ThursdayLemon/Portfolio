@@ -7,6 +7,8 @@
   var MARQUEE_SEP = "   ";
   var MARQUEE_REPEATS = 12;
   var MARQUEE_SPEED = 0.005; // seconds per pixel of one repetition
+  var MARQUEE_EDGE = 20;     // keep the last glyph clear of the right edge
+  var MIN_TITLE_PX = 28;     // floor for the shrink-to-fit fallback
 
   /* ---------- Theme ---------------------------------------- */
   function initTheme() {
@@ -109,18 +111,41 @@
     if (!el) return;
     el.classList.remove("marquee");
     el.style.animation = "";
+    el.style.fontSize = "";
+  }
+
+  // The home page name is the one title that must always read in full, so when
+  // it cannot scroll it shrinks until it fits. Project titles are long enough
+  // that shrinking them would leave the type tiny, so those keep the reference
+  // behaviour and simply clip.
+  function fitTitle(el, text, left) {
+    if (!el.classList.contains("name")) return;
+    if (!document.body.classList.contains("home")) return;
+
+    var base = parseFloat(window.getComputedStyle(el).fontSize);
+    var available = window.innerWidth - left - MARQUEE_EDGE;
+    var width = measure(el, text);
+    if (width <= available || !width) return;
+    var size = Math.max(MIN_TITLE_PX, Math.floor(base * (available / width)));
+    el.style.fontSize = size + "px";
+    el.parentNode.classList.add("title-fitted");
   }
 
   function maybeMarquee(el) {
     if (!el) return;
     stopMarquee(el);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (el.parentNode) el.parentNode.classList.remove("title-fitted");
 
     var text = (el.dataset.title || el.textContent).trim();
-    var textWidth = measure(el, text);
     var left = el.getBoundingClientRect().left;
+    var textWidth = measure(el, text);
 
     if (left + textWidth <= window.innerWidth) return; // it fits, leave it alone
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      fitTitle(el, text, left);
+      return;
+    }
 
     var unit = measure(el, MARQUEE_SEP + text);
     var tail = "";
