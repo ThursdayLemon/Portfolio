@@ -292,12 +292,12 @@ button {
 }
 .menu-contact svg {
   display: block;
-  width: 18px;
-  height: 18px;
+  width: 36px;
+  height: 36px;
   overflow: visible;
   position: absolute;
-  right: 11px;
-  top: 11px;
+  right: 2px;
+  top: 2px;
 }
 .menu-contact svg * { transition: fill 0.25s var(--ease), stroke 0.25s var(--ease); }
 .menu-contact .planet-ink { fill: var(--black); }
@@ -308,7 +308,7 @@ button {
 /* the label pill grows out to the left; the planet flips to sit on it */
 .menu-contact a:hover .btn-label {
   max-width: 260px;
-  padding: 5px 42px 5px 14px;
+  padding: 5px 48px 5px 14px;
   border: 2px solid var(--black);
 }
 /* on the expanded pill the drawing and the page colour swap roles */

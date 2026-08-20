@@ -165,12 +165,14 @@ order they do on reikocui.com and nothing is captioned that was not there.
   reference's `white.gif` / `darkgrey.gif`. Tiled at `2px 2px` with
   `image-rendering: pixelated`, it lays a 25% white (or #282828) dot screen over
   the photo so the nav stays legible and the image keeps its texture.
-- **Top-right button**: an 18px black ringed planet with sparkles that expands
+- **Top-right button**: a 36px black ringed planet with sparkles that expands
   into a "Creative work" pill on hover and links to lilingcui.com. The icon is
   layered rather than knocked out — `.planet-ink` / `.planet-ring` carry the
   drawing, `.planet-bg` / `.planet-bg-stroke` carry the page colour that cases
   the ring where it passes behind the planet and punches the highlights. On
-  hover the two roles swap, so it reads on the dark pill too.
+  hover the two roles swap, so it reads on the dark pill too. The ring and
+  sparkles are held within a radius of 20 viewBox units, which is what keeps
+  them inside the pill's rounded end at this size.
 
 ## Still to do
 

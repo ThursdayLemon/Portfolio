@@ -276,20 +276,22 @@ def head(title, description, extra_body_class="", bg=None):
 
 # Ringed planet with sparkles. Layered rather than knocked out, so each part
 # can flip colour independently when the label pill expands behind it:
-# .planet-ink is the drawing, .planet-bg is the page colour used to case the
-# ring where it passes behind the planet and to punch the highlights.
+# .planet-ink / .planet-ring are the drawing, .planet-bg / .planet-bg-stroke
+# are the page colour that cases the ring where it passes behind the planet.
+# Ring and sparkles are kept inside a radius of 20 in viewBox units so that at
+# 36px nothing spills past the rounded end of the expanded pill.
 CONTACT_SVG = (
     '<svg viewBox="0 0 40 40" aria-hidden="true">'
-    '<ellipse class="planet-ink" cx="35.0" cy="8.2" rx="0.95" ry="1.55" transform="rotate(28 35.0 8.2)"/>'
-    '<ellipse class="planet-ink" cx="6.2" cy="13.0" rx="0.85" ry="1.4" transform="rotate(22 6.2 13.0)"/>'
-    '<ellipse class="planet-ink" cx="9.4" cy="32.6" rx="0.85" ry="1.4" transform="rotate(-26 9.4 32.6)"/>'
-    '<ellipse class="planet-ink" cx="35.6" cy="26.6" rx="0.9" ry="1.45" transform="rotate(26 35.6 26.6)"/>'
-    '<path class="planet-ring" d="M37.29 13.71A18.4 5.2 -20.0 1 1 2.71 26.29'
-    'A18.4 5.2 -20.0 1 1 37.29 13.71Z"/>'
+    '<ellipse class="planet-ink" cx="32.6" cy="10.4" rx="0.85" ry="1.4" transform="rotate(28 32.6 10.4)"/>'
+    '<ellipse class="planet-ink" cx="8.0" cy="14.2" rx="0.78" ry="1.28" transform="rotate(22 8.0 14.2)"/>'
+    '<ellipse class="planet-ink" cx="11.0" cy="30.4" rx="0.78" ry="1.28" transform="rotate(-26 11.0 30.4)"/>'
+    '<ellipse class="planet-ink" cx="32.8" cy="25.8" rx="0.8" ry="1.32" transform="rotate(26 32.8 25.8)"/>'
+    '<path class="planet-ring" d="M35.88 14.22A16.9 4.8 -20.0 1 1 4.12 25.78'
+    'A16.9 4.8 -20.0 1 1 35.88 14.22Z"/>'
     '<circle class="planet-bg-stroke" cx="20" cy="20" r="12.3" stroke-width="3.2"/>'
     '<circle class="planet-ink" cx="20" cy="20" r="12.3"/>'
-    '<path class="planet-bg-stroke" stroke-width="4" d="M30.67 20.81A18.4 5.2 -20.0 1 1 6.71 20.86"/>'
-    '<path class="planet-ring" d="M30.67 20.81A18.4 5.2 -20.0 1 1 6.71 20.86"/>'
+    '<path class="planet-bg-stroke" stroke-width="4" d="M29.81 20.76A16.9 4.8 -20.0 1 1 7.79 20.77"/>'
+    '<path class="planet-ring" d="M29.81 20.76A16.9 4.8 -20.0 1 1 7.79 20.77"/>'
     '<path class="planet-bg" d="M13.6 12.9a11 11 0 0 1 8.0-3.6 0.95 0.95 0 0 1 0.05 1.9'
     ' 9.1 9.1 0 0 0-6.6 3.0 0.95 0.95 0 0 1-1.45-1.3z"/>'
     '<circle class="planet-bg" cx="15.2" cy="17.2" r="1.05"/>'
