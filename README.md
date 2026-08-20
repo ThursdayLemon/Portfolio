@@ -3,6 +3,15 @@
 Portfolio site for Liling Cui. Structure, typography scale and interaction
 patterns follow rodrigosens.com; all content, imagery and copy are Liling's own.
 
+## Deploying
+
+The site is plain static files with no build step at serve time and no external
+requests, so any static host works. `.nojekyll` tells GitHub Pages to serve the
+files as-is rather than running them through Jekyll.
+
+Every path in the HTML is relative, so it works both at a domain root and under
+a `/repo-name/` subpath.
+
 ## Run it
 
 ```bash
