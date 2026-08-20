@@ -139,12 +139,18 @@
    "kind": "el"
   },
   {
-   "src": "assets/img/white-label-project/m--homepage-FGAbVrbSUlvB5OYK.jpg",
-   "kind": "el"
-  },
-  {
-   "src": "assets/img/white-label-project/d---homepage-1vK1hvh3iU5HXM7Z.png",
-   "kind": "el"
+   "kind": "group",
+   "gap": 6,
+   "items": [
+    {
+     "src": "assets/img/white-label-project/m--homepage-FGAbVrbSUlvB5OYK.jpg",
+     "grow": 0.0551
+    },
+    {
+     "src": "assets/img/white-label-project/d---homepage-1vK1hvh3iU5HXM7Z.png",
+     "grow": 0.2005
+    }
+   ]
   },
   {
    "src": "assets/img/white-label-project/ecomm-design-system-liling-cui-MYp5qUdpVeW49KLI.png",
@@ -230,10 +236,6 @@
   },
   {
    "src": "assets/img/bmw-loyalty-programme/design-5-1mfDNP7NZ1ttFyCJ.jpg",
-   "kind": "el"
-  },
-  {
-   "src": "assets/img/bmw-loyalty-programme/screenshot-2023-01-10-at-13.43.26-cc8GtHlZOuTo9nO5.png",
    "kind": "el"
   },
   {
@@ -365,12 +367,20 @@
    "kind": "bg"
   },
   {
-   "src": "assets/img/kama-web-facelift/kama-ui-facelift-liling-cui-I76nWCgi3FYsMXOC.png",
-   "kind": "el"
-  },
-  {
-   "src": "assets/img/kama-web-facelift/new-homepage-mcppovxqlezlh3wb-vpd3KZUQrQvdVFqe.jpg",
-   "kind": "el"
+   "kind": "group",
+   "gap": 6,
+   "items": [
+    {
+     "src": "assets/img/kama-web-facelift/kama-ui-facelift-liling-cui-I76nWCgi3FYsMXOC.png",
+     "grow": 0.2782,
+     "caption": "Before"
+    },
+    {
+     "src": "assets/img/kama-web-facelift/new-homepage-mcppovxqlezlh3wb-vpd3KZUQrQvdVFqe.jpg",
+     "grow": 0.2931,
+     "caption": "After"
+    }
+   ]
   },
   {
    "src": "assets/img/kama-web-facelift/kama-ui-facelift-liling-cui-3-3BPplkBaA4njUxh7.jpg",

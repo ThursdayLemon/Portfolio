@@ -83,6 +83,24 @@ Each face ships as one static weight, declared `font-weight: 100 900` so the
 browser maps every requested weight onto the real file rather than
 synthesising a fake bold.
 
+### Paired images
+
+A manifest row can hold two or more images that share one image slot:
+
+```json
+{ "kind": "group", "gap": 6,
+  "items": [ { "src": "...", "grow": 0.2782, "caption": "Before" },
+             { "src": "...", "grow": 0.2931, "caption": "After"  } ] }
+```
+
+`grow` is the image's aspect ratio (width ÷ height). `build.py` normalises the
+row's grow factors to sum to 100 and emits them as `flex-grow`, so widths land
+in proportion and the images come out the same height — a justified row filling
+exactly the width of a single image. Normalising matters: raw ratios below 1
+would make flex hand out only that fraction of the row.
+
+`caption` is optional and renders above the image. `gap` defaults to 6px.
+
 ### Per-page background
 
 A project can recolour its whole page by adding a `"bg"` key to its entry in
@@ -91,6 +109,9 @@ A project can recolour its whole page by adding a `"bg"` key to its entry in
 ```python
 "bg": "255 250 244",   # L'Artisan, sampled from its own slide artwork
 ```
+
+In use: L'Artisan `255 250 244` (#fffaf4), Volkswagen and BMW `254 253 249`
+(#fefdf9). All three were sampled from artwork already on the page.
 
 `build.py` emits that as `<style>:root { --bg: ... }</style>` in the page head.
 `:root` outranks the stylesheet's `html` rule but loses to `html.dark-theme`,

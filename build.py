@@ -87,6 +87,8 @@ PROJECTS = [
     },
     {
         "slug": "bmw-loyalty-programme",
+        # sampled from design-1-H08vkdmLly5hIBJT.jpg: #fefdf9, identical in all four corners
+        "bg": "254 253 249",
         "pill": "BMW Loyalty",
         "title": "BMW Loyalty Programme",
         "intro": [
@@ -111,6 +113,8 @@ PROJECTS = [
     },
     {
         "slug": "volkwagen-idhub",
+        # sampled from vw3-hJO7s5DzPoxih9FV.jpg: #fefdf9, identical in all four corners
+        "bg": "254 253 249",
         "pill": "Volkswagen ID. Hub",
         "title": "Volkswagen ID. Hub",
         "intro": [
@@ -358,21 +362,30 @@ FOOT = """
 """
 
 
-def layout_images(rows):
-    """Return the images in the reading order recovered from the original site.
-
-    manifest.json preserves that order (block order on the page, then position
-    within each block). Nothing is reshuffled and nothing is resized — every
-    image gets the same width from CSS and keeps its own proportions.
-    """
-    return [r["src"] for r in rows]
+IMG = '<img src="{src}" alt="" loading="lazy" decoding="async">'
 
 
 def figure(src):
-    return (
-        '        <figure data-aos="fade-up">'
-        f'<img src="{src}" alt="" loading="lazy" decoding="async"></figure>'
-    )
+    return f'        <figure data-aos="fade-up">{IMG.format(src=src)}</figure>'
+
+
+def group(row):
+    """A justified row of images sharing the width of a single image slot.
+
+    flex-grow is each image's aspect ratio, so the widths land in proportion
+    and every image in the row ends up the same height.
+    """
+    # grow factors are normalised to sum to 100: only their ratio matters, and
+    # a sum below 1 would make flex hand out just that fraction of the row
+    total = sum(it["grow"] for it in row["items"]) or 1
+    out = [f'        <div class="group" data-aos="fade-up" '
+           f'style="gap:{row.get("gap", 6)}px">']
+    for it in row["items"]:
+        cap = f'<figcaption>{e(it["caption"])}</figcaption>' if it.get("caption") else ""
+        out.append(f'          <figure style="flex-grow:{it["grow"] / total * 100:.4f}">'
+                   f'{cap}{IMG.format(src=it["src"])}</figure>')
+    out.append("        </div>")
+    return "\n".join(out)
 
 
 # ---------------------------------------------------------------- pages
@@ -426,8 +439,8 @@ def build_home():
 
 def build_project(p):
     slug = p["slug"]
-    rows = [r for r in MANIFEST.get(slug, []) if not r["src"].endswith(COVERS[slug])]
-    images = layout_images(rows)
+    rows = [r for r in MANIFEST.get(slug, [])
+            if not r.get("src", "").endswith(COVERS[slug])]
 
     sidebar = ['      <aside class="sidebar" data-aos="fade-up">']
     for heading, items in p["meta"]:
@@ -438,7 +451,7 @@ def build_project(p):
         sidebar.append("        </ul>")
     sidebar.append("      </aside>")
 
-    body = [figure(src) for src in images]
+    body = [group(r) if r.get("kind") == "group" else figure(r["src"]) for r in rows]
 
     intro = "\n".join(f"          <p>{e(t)}</p>" for t in p["intro"])
 
